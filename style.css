@@ -1,0 +1,22 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+div#game-env {
+
+    align-content: center;
+    /* background-color: sandybrown; */
+}
+
+table {
+    margin: 0 auto;
+    /* padding: 0 auto; */
+}
+
+table  tr  td {
+    width: 4em;
+    height: 4em;
+    border: 1px solid green;
+    align-content: center;
+    padding: 0 auto;
+}
