@@ -98,7 +98,27 @@ function handleMovements(event) {
             }
             break;
 
+        //TODO
         case "ArrowDown":
+            for (let row = 0; row < grid; row++) {
+                let flag = false;
+                for (let col = 0; col < grid - 1; col++) {
+                    for (let k = (col + 1) * grid + row; k < (row; k += 4) {
+                        if (array[k].value != array[k + grid].value && array[k + grid].value == 0) {
+                            array[k + grid] = array[k];
+                            array[k] = new GridElement(0, true);
+                        } else if (
+                            array[k].value == array[k + grid].value &&
+                            array[k].value != 0 &&
+                            !flag
+                        ) {
+                            array[k + grid] = new GridElement(array[k + grid].value * 2, true);
+                            array[k] = new GridElement(0, true);
+                            flag = true;
+                        }
+                    }
+                }
+            }
             break;
 
         case "ArrowLeft":
@@ -127,8 +147,8 @@ function handleMovements(event) {
         case "ArrowRight":
             for (let row = 0; row < grid; row++) {
                 let flag = false;
-                for (let col = 0; col < grid - 1; col++) {
-                    for (let k = ((row + 1) * (grid - 1) - (col + 1)); k < ((row + 1) * grid - 1); k++) {
+                for (let col = 1; col < grid; col++) {
+                    for (let k = (row + 1) * grid - (col + 1); k < (row + 1) * grid - 1; k++) {
                         if (array[k].value != array[k + 1].value && array[k + 1].value == 0) {
                             array[k + 1] = array[k];
                             array[k] = new GridElement(0, true);
