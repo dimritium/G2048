@@ -32,7 +32,6 @@ function gameOver() {
 }
 
 function getArrayEmptyPos() {
-    // arrayEmptyPos.fill(undefined);
     arrayEmptyPos.length = 0;
     for (let i = 0; i < array.length; i++) {
         if (array[i].value == 0) {
@@ -98,12 +97,11 @@ function handleMovements(event) {
             }
             break;
 
-        //TODO
         case "ArrowDown":
             for (let row = 0; row < grid; row++) {
                 let flag = false;
-                for (let col = 0; col < grid - 1; col++) {
-                    for (let k = (col + 1) * grid + row; k < (row; k += 4) {
+                for (let col = grid - 2; col >= 0; col--) {
+                    for (let k = col * grid + row; k < (grid) * (grid - 1) + row; k += 4) {
                         if (array[k].value != array[k + grid].value && array[k + grid].value == 0) {
                             array[k + grid] = array[k];
                             array[k] = new GridElement(0, true);
@@ -116,7 +114,7 @@ function handleMovements(event) {
                             array[k] = new GridElement(0, true);
                             flag = true;
                         }
-                    }
+                    } 
                 }
             }
             break;
@@ -167,11 +165,9 @@ function handleMovements(event) {
             break;
     }
     updateGridValue();
-    console.log(array);
-    console.log(event.key);
 }
 
-function main() {
+(function main() {
     gameEnv(grid);
     getArrayEmptyPos(array);
     randomInsert();
@@ -180,8 +176,4 @@ function main() {
             handleMovements(event);
         }
     });
-}
-
-// document.addEventListener("onKe")
-
-main();
+}());
