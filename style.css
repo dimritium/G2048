@@ -1,22 +1,38 @@
+html {
+    height: 100%;
+}
+
 * {
     margin: 0;
     padding: 0;
 }
-div#game-env {
 
-    align-content: center;
-    /* background-color: sandybrown; */
+#header {
+    height: 15vh;
+    width: 100%;
+    margin: 0 0 10px 0;
+    background: #1877f2;
 }
 
-table {
+#game-env {
+    margin: auto;
+
+}
+
+.table.is-bordered {
     margin: 0 auto;
-    /* padding: 0 auto; */
+}
+
+.block {
+    text-align: center;
 }
 
 table  tr  td {
     width: 4em;
     height: 4em;
-    border: 1px solid green;
-    align-content: center;
-    padding: 0 auto;
+    vertical-align: middle;
+}
+
+.table td {
+    vertical-align: middle;
 }
