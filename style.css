@@ -1,5 +1,6 @@
-html {
+html, body {
     height: 100%;
+    background: #f8f8ff;
 }
 
 * {
@@ -8,15 +9,27 @@ html {
 }
 
 #header {
-    height: 15vh;
+    height: 4em;
     width: 100%;
     margin: 0 0 10px 0;
     background: #1877f2;
+    color: white;
+    text-align: center;
+}
+
+.header-text {
+    padding: 1em;
+    font-size: larger;
+    font-weight: bold;
 }
 
 #game-env {
     margin: auto;
 
+}
+
+.table tbody {
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
 }
 
 .table.is-bordered {
