@@ -1,4 +1,11 @@
-import { GridElement } from "/types/GridElement.js";
+// import { GridElement } from "/types/GridElement.js";
+
+class GridElement {
+    constructor(value, canMerge) {
+        this.value = value;
+        this.canMerge = canMerge;
+    }
+}
 
 let grid = 4;
 let array = new Array(grid * grid);
