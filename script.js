@@ -1,15 +1,18 @@
-// import { GridElement } from "/types/GridElement.js";
-
 class GridElement {
+    style = "";
     constructor(value, canMerge) {
         this.value = value;
         this.canMerge = canMerge;
     }
 }
 
+let rainbow = new Rainbow();
+rainbow.setNumberRange(2, 2048);
+
 let grid = 4;
 let array = new Array(grid * grid);
 let arrayEmptyPos = new Array();
+
 
 for (let i = 0; i < grid * grid; i++) {
     array[i] = new GridElement(0, true);
@@ -43,11 +46,11 @@ function isMovePossible() {
     for (let i = 0; i < grid - 1; i++) {
         for (let j = (i * grid); j < (i * grid + grid); j++) {
             if (j == (i * grid + grid - 1)) {
-                if(array[j].value == array[j+4].value) {
+                if (array[j].value == array[j + 4].value) {
                     return true;
                 }
             } else {
-                if(array[j].value == array[j+4].value || array[j].value == array[j+1].value) {
+                if (array[j].value == array[j + 4].value || array[j].value == array[j + 1].value) {
                     return true;
                 }
             }
@@ -86,6 +89,9 @@ function randomInsert() {
         document
             .getElementById("val-" + (index + 1))
             .getElementsByTagName("div")[0].innerHTML = val;
+        
+            // document
+            // .getElementById("val-" + (index + 1)).style.backgroundColor = "#" + rainbow.colorAt(val);
     }
 }
 
@@ -96,6 +102,9 @@ function updateGridValue() {
                 .getElementById("val-" + (i * grid + j + 1))
                 .getElementsByTagName("div")[0].innerHTML =
                 array[i * grid + j].value == 0 ? "" : array[i * grid + j].value;
+            
+                // document
+                // .getElementById("val-" + (i * grid + j + 1)).style.backgroundColor = "#" + (rainbow.colorAt(array[i * grid + j].value));
         }
     }
     randomInsert();
@@ -105,11 +114,11 @@ function updateCanMerge() {
     for (let i = 0; i < grid * grid; i++) {
         array[i].canMerge = true;
     }
-    console.log(array);
 }
 
-function handleMovements(event) {
-    switch (event.key) {
+function handleMovements(key) {
+    let isGridMoved = false;
+    switch (key) {
         case "ArrowUp":
             for (let row = 0; row < grid; row++) {
                 updateCanMerge();
@@ -118,17 +127,18 @@ function handleMovements(event) {
                         if (array[k].value != array[k - grid].value && array[k - grid].value == 0) {
                             array[k - grid] = array[k];
                             array[k] = new GridElement(0, true);
+                            isGridMoved = true;
                         } else if (
                             array[k].value == array[k - grid].value &&
                             array[k].value != 0 &&
                             array[k - grid].canMerge && array[k].canMerge
                         ) {
                             array[k - grid] = new GridElement(array[k - grid].value * 2, false);
-                            if(array[k - grid].value == 2048) {
+                            if (array[k - grid].value == 2048) {
                                 gameWon();
                             }
                             array[k] = new GridElement(0, true);
-
+                            isGridMoved = true;
                         }
                     }
                 }
@@ -143,17 +153,18 @@ function handleMovements(event) {
                         if (array[k].value != array[k + grid].value && array[k + grid].value == 0) {
                             array[k + grid] = array[k];
                             array[k] = new GridElement(0, true);
+                            isGridMoved = true;
                         } else if (
                             array[k].value == array[k + grid].value &&
                             array[k].value != 0 &&
                             array[k + grid].canMerge && array[k].canMerge
                         ) {
                             array[k + grid] = new GridElement(array[k + grid].value * 2, false);
-                            if(array[k + grid].value == 2048) {
+                            if (array[k + grid].value == 2048) {
                                 gameWon();
                             }
                             array[k] = new GridElement(0, true);
-
+                            isGridMoved = true;
                         }
                     }
                 }
@@ -168,17 +179,18 @@ function handleMovements(event) {
                         if (array[k].value != array[k - 1].value && array[k - 1].value == 0) {
                             array[k - 1] = array[k];
                             array[k] = new GridElement(0, true);
+                            isGridMoved = true;
                         } else if (
                             array[k].value == array[k - 1].value &&
                             array[k].value != 0 &&
                             array[k - 1].canMerge && array[k].canMerge
                         ) {
                             array[k - 1] = new GridElement(array[k - 1].value * 2, false);
-                            if(array[k - 1].value == 2048) {
+                            if (array[k - 1].value == 2048) {
                                 gameWon();
                             }
                             array[k] = new GridElement(0, true);
-
+                            isGridMoved = true;
                         }
                     }
                 }
@@ -193,24 +205,26 @@ function handleMovements(event) {
                         if (array[k].value != array[k + 1].value && array[k + 1].value == 0) {
                             array[k + 1] = array[k];
                             array[k] = new GridElement(0, true);
+                            isGridMoved = true;
                         } else if (
                             array[k].value == array[k + 1].value &&
                             array[k].value != 0 &&
                             array[k + 1].canMerge && array[k].canMerge
                         ) {
                             array[k + 1] = new GridElement(array[k + 1].value * 2, false);
-                            if(array[k + 1].value == 2048) {
+                            if (array[k + 1].value == 2048) {
                                 gameWon();
                             }
                             array[k] = new GridElement(0, true);
-
+                            isGridMoved = true;
                         }
                     }
                 }
             }
             break;
     }
-    updateGridValue();
+    if (isGridMoved)
+        updateGridValue();
 }
 
 (function main() {
@@ -219,7 +233,28 @@ function handleMovements(event) {
     randomInsert();
     document.addEventListener("keydown", function (event) {
         if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(event.key)) {
-            handleMovements(event);
+            event.preventDefault();
+            handleMovements(event.key);
         }
     });
+
+    let element = document.getElementById("game");
+    let swipemanager = new Hammer.Manager(element, {
+        recognizers: [
+            [Hammer.Swipe, { direction: Hammer.DIRECTION_ALL }],
+        ]
+    });
+    swipemanager.set({ enable: true });
+    swipemanager.on("swipe", function (ev) {
+        if (ev.direction == 2) {
+            handleMovements("ArrowLeft");
+        } else if (ev.direction == 4) {
+            handleMovements("ArrowRight");
+        } else if (ev.direction == 8) {
+            handleMovements("ArrowUp");
+        } else if (ev.direction == 16) {
+            handleMovements("ArrowDown");
+        }
+    });
+
 }());
