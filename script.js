@@ -225,6 +225,8 @@ function handleMovements(key) {
     }
     if (isGridMoved)
         updateGridValue();
+    else 
+        getArrayEmptyPos();
 }
 
 (function main() {
