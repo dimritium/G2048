@@ -243,9 +243,10 @@ function handleMovements(key) {
     let element = document.getElementById("game");
     let swipemanager = new Hammer.Manager(element, {
         recognizers: [
-            [Hammer.Swipe, { threshold: 5, direction: Hammer.DIRECTION_ALL }],
+            [Hammer.Swipe, { velocity: 0.1, threshold: 5, direction: Hammer.DIRECTION_ALL }],
         ]
     });
+
     swipemanager.set({ enable: true });
     swipemanager.on("swipe", function (ev) {
         if (ev.direction == 2) {
