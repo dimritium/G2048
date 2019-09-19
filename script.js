@@ -6,12 +6,20 @@ class GridElement {
     }
 }
 
-let rainbow = new Rainbow();
-rainbow.setNumberRange(2, 2048);
+// let rainbow = new Rainbow();
+// rainbow.setNumberRange(2, 2048);
 
 let grid = 4;
 let array = new Array(grid * grid);
 let arrayEmptyPos = new Array();
+
+for(let i = 0; i < 16; i++) {
+    if(i > 11 && i <= 13) {
+        array[i] = new GridElement(2, true); 
+    }
+    else 
+        array[i] = (new GridElement(i, true));
+}
 
 
 for (let i = 0; i < grid * grid; i++) {
@@ -43,15 +51,26 @@ function gameOver() {
 }
 
 function isMovePossible() {
-    for (let i = 0; i < grid - 1; i++) {
-        for (let j = (i * grid); j < (i * grid + grid); j++) {
-            if (j == (i * grid + grid - 1)) {
-                if (array[j].value == array[j + 4].value) {
-                    return true;
+    for (let i = 0; i < grid; i++) {
+        for (let j = i * grid; j < i * grid + grid; j++) {
+            if (i == grid - 1) {
+                if (j != i * grid + grid - 1) {
+                    if (array[j].value == array[j + 1].value) {
+                        return true;
+                    }
                 }
             } else {
-                if (array[j].value == array[j + 4].value || array[j].value == array[j + 1].value) {
-                    return true;
+                if (j == i * grid + grid - 1) {
+                    if (array[j].value == array[j + grid].value) {
+                        return true;
+                    }
+                } else {
+                    if (
+                        array[j].value == array[j + grid].value ||
+                        array[j].value == array[j + 1].value
+                    ) {
+                        return true;
+                    }
                 }
             }
         }
@@ -110,6 +129,7 @@ function updateGridValue() {
     randomInsert();
 }
 
+// TODO: change only required row as per movement 
 function updateCanMerge() {
     for (let i = 0; i < grid * grid; i++) {
         array[i].canMerge = true;
@@ -123,7 +143,7 @@ function handleMovements(key) {
             for (let row = 0; row < grid; row++) {
                 updateCanMerge();
                 for (let col = 0; col < grid - 1; col++) {
-                    for (let k = (col + 1) * grid + row; k > row; k -= 4) {
+                    for (let k = (col + 1) * grid + row; k > row; k -= grid) {
                         if (array[k].value != array[k - grid].value && array[k - grid].value == 0) {
                             array[k - grid] = array[k];
                             array[k] = new GridElement(0, true);
@@ -147,9 +167,9 @@ function handleMovements(key) {
 
         case "ArrowDown":
             for (let row = 0; row < grid; row++) {
-                updateCanMerge(array);
+                updateCanMerge();
                 for (let col = grid - 2; col >= 0; col--) {
-                    for (let k = col * grid + row; k < (grid) * (grid - 1) + row; k += 4) {
+                    for (let k = col * grid + row; k < (grid) * (grid - 1) + row; k += grid) {
                         if (array[k].value != array[k + grid].value && array[k + grid].value == 0) {
                             array[k + grid] = array[k];
                             array[k] = new GridElement(0, true);
@@ -173,7 +193,7 @@ function handleMovements(key) {
 
         case "ArrowLeft":
             for (let row = 0; row < grid; row++) {
-                updateCanMerge(array);
+                updateCanMerge();
                 for (let col = 0; col < grid - 1; col++) {
                     for (let k = row * grid + col + 1; k > row * grid; k--) {
                         if (array[k].value != array[k - 1].value && array[k - 1].value == 0) {
@@ -199,7 +219,7 @@ function handleMovements(key) {
 
         case "ArrowRight":
             for (let row = 0; row < grid; row++) {
-                updateCanMerge(array);
+                updateCanMerge();
                 for (let col = 1; col < grid; col++) {
                     for (let k = (row + 1) * grid - (col + 1); k < (row + 1) * grid - 1; k++) {
                         if (array[k].value != array[k + 1].value && array[k + 1].value == 0) {
@@ -243,10 +263,9 @@ function handleMovements(key) {
     let element = document.getElementById("game");
     let swipemanager = new Hammer.Manager(element, {
         recognizers: [
-            [Hammer.Swipe, { velocity: 0.1, threshold: 5, direction: Hammer.DIRECTION_ALL }],
+            [Hammer.Swipe, { threshold: 5, direction: Hammer.DIRECTION_ALL }],
         ]
     });
-
     swipemanager.set({ enable: true });
     swipemanager.on("swipe", function (ev) {
         if (ev.direction == 2) {
