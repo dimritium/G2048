@@ -13,15 +13,6 @@ let grid = 4;
 let array = new Array(grid * grid);
 let arrayEmptyPos = new Array();
 
-for(let i = 0; i < 16; i++) {
-    if(i > 11 && i <= 13) {
-        array[i] = new GridElement(2, true); 
-    }
-    else 
-        array[i] = (new GridElement(i, true));
-}
-
-
 for (let i = 0; i < grid * grid; i++) {
     array[i] = new GridElement(0, true);
 }
